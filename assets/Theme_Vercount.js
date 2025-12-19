@@ -1,7 +1,9 @@
 const BLUR_INTENSITY = '8px'; // 高斯模糊程度，可修改这个值
-const BUTTON_HOVER_COLOR = '#8A2BE2'; // 右上角按钮悬浮颜色，可修改这个值（支持 #000000, rgb(255,0,0), rgba(255,0,0,0.8) 等格式）
-const BACKGROUND = "https://blog.traveler.dpdns.org/assets/image/background.png";
+const BUTTON_HOVER_COLOR = '#8A2BE2'; // 右上角按钮悬停颜色，可修改这个值（支持 #000000, rgb(255,0,0), rgba(255,0,0,0.8) 等格式）
+const BACKGROUND = "https://blog-assets.traveler.dpdns.org/assets/image/background.png";
 const ENABLE_RAIN_EFFECT = true; // 是否启用下雨效果，true为启用，false为关闭
+const CUSTOM_FONT_URL = "https://blog-assets.traveler.dpdns.org/assets/font/font.ttf"; // 自定义TTF字体文件地址
+const CUSTOM_FONT_NAME = "Font"; // 自定义字体名称
 
 document.addEventListener('DOMContentLoaded', function() {
     
@@ -24,7 +26,37 @@ document.addEventListener('DOMContentLoaded', function() {
         document.head.appendChild(script);
     }
     
-    // 创建MDUI卡片容器并包装body内容
+    // 加载自定义字体
+    function loadCustomFont() {
+        const fontFaceCSS = `
+            @font-face {
+                font-family: '${CUSTOM_FONT_NAME}';
+                src: url('${CUSTOM_FONT_URL}') format('truetype');
+                font-weight: 300 400 500 700;
+                font-style: normal;
+                font-display: swap;
+            }
+            
+            @font-face {
+                font-family: '${CUSTOM_FONT_NAME} Mono';
+                src: url('${CUSTOM_FONT_URL}') format('truetype');
+                font-weight: 300 400 500 700;
+                font-style: normal;
+                font-display: swap;
+            }
+        `;
+        
+        const fontStyle = document.createElement('style');
+        fontStyle.innerHTML = fontFaceCSS;
+        document.head.appendChild(fontStyle);
+        
+        console.log('MDGmeek: 自定义字体已加载');
+    }
+    
+    // 延迟加载自定义字体
+    setTimeout(loadCustomFont, 100);
+    
+    // 创建MDUI卡片容器并包裹body内容
     const bodyContent = document.body.innerHTML;
     const cardContainer = document.createElement('div');
     cardContainer.className = 'mdui-card mdui-card-content';
@@ -176,7 +208,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (document.hidden) return;
                 
                 // 根据屏幕宽度计算雨滴数量
-                let rainCount = Math.floor(boxWidth / 30); // 减少密度，避免过多
+                let rainCount = Math.floor(boxWidth / 30); // 减小密度，避免过多
                 
                 // 限制最大雨滴数量
                 if (activeRaindrops.length > 200) {
@@ -193,7 +225,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 }
             }
             
-            // 清空所有雨滴
+            // 清除所有雨滴
             function clearAllRaindrops() {
                 // 取消动画帧
                 if (rainTimer) {
@@ -241,7 +273,7 @@ document.addEventListener('DOMContentLoaded', function() {
                         rainInterval = null;
                     }
                     
-                    // 加快雨滴下落速度，快速清空
+                    // 加快雨滴下落速度，快速清除
                     activeRaindrops.forEach(raindrop => {
                         raindrop.speed = 10; // 加快速度
                         raindrop.acceleration = 0.1; // 加快加速度
@@ -300,11 +332,11 @@ document.addEventListener('DOMContentLoaded', function() {
     function createVercount() {
         var postBody = document.getElementById('postBody');
         if (postBody){
-            postBody.insertAdjacentHTML('afterend','<div id="busuanzi_container_page_pv" style="display:none;float:left;margin-top:8px;font-size:small;">❤️ 本文浏览量 ❤️<span id="busuanzi_value_page_pv"></span>次</div>');
+            postBody.insertAdjacentHTML('afterend','<div id="busuanzi_container_page_pv" style="display:none;float:left;margin-top:8px;font-size:small;">👁️ 本文浏览量 👁️<span id="busuanzi_value_page_pv"></span>次</div>');
         }
         var runday = document.getElementById('runday');
         if (runday) {
-            runday.insertAdjacentHTML('afterend', '<span id="busuanzi_container_site_pv" style="display:none">❤️ 总浏览量 ❤️<span id="busuanzi_value_site_pv"></span>次 • </span>');
+            runday.insertAdjacentHTML('afterend', '<span id="busuanzi_container_site_pv" style="display:none">👁️ 总浏览量 👁️<span id="busuanzi_value_site_pv"></span>次 ｜ </span>');
         }
     }
     
@@ -477,7 +509,7 @@ document.addEventListener('DOMContentLoaded', function() {
             margin: 30px auto;
             padding: 0;
             font-size: 16px;
-            font-family: sans-serif;
+            font-family: '${CUSTOM_FONT_NAME}', sans-serif !important;
             line-height: 1.25;
             background: transparent !important;
             border-radius: 0;
@@ -513,7 +545,7 @@ document.addEventListener('DOMContentLoaded', function() {
             box-shadow: 0 8px 25px rgba(138, 43, 226, 0.25) !important;
         }
         
-        /* 分页条 */
+        /* 分页栏 */
         .pagination a:hover, .pagination a:focus, .pagination span:hover, .pagination span:focus, .pagination em:hover, .pagination em:focus {
             border-color: rebeccapurple;
         }
@@ -549,7 +581,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         /* Vercount 统计样式 */
         #busuanzi_container_page_pv, #busuanzi_container_site_pv {
-            font-family: 'Roboto', sans-serif;
+            font-family: '${CUSTOM_FONT_NAME}', sans-serif;
             color: #333;
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
@@ -600,7 +632,7 @@ document.addEventListener('DOMContentLoaded', function() {
             max-width: 1100px;
             margin: 30px auto;
             font-size: 16px;
-            font-family: sans-serif;
+            font-family: '${CUSTOM_FONT_NAME}', sans-serif !important;
             line-height: 1.25;
             background: transparent !important;
             border-radius: 0;
@@ -686,7 +718,7 @@ document.addEventListener('DOMContentLoaded', function() {
             float: left;
             margin-top: 8px;
             font-size: small;
-            font-family: 'Roboto', sans-serif;
+            font-family: '${CUSTOM_FONT_NAME}', sans-serif;
             color: #333;
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
@@ -703,7 +735,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         
         #busuanzi_container_site_pv {
-            font-family: 'Roboto', sans-serif;
+            font-family: '${CUSTOM_FONT_NAME}', sans-serif;
             color: #333;
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
@@ -767,7 +799,7 @@ document.addEventListener('DOMContentLoaded', function() {
             margin: 30px auto;
             padding: 0;
             font-size: 16px;
-            font-family: sans-serif;
+            font-family: '${CUSTOM_FONT_NAME}', sans-serif !important;
             line-height: 1.25;
             background: transparent !important;
             border-radius: 0;
@@ -852,7 +884,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         /* Vercount 统计样式 */
         #busuanzi_container_site_pv {
-            font-family: 'Roboto', sans-serif;
+            font-family: '${CUSTOM_FONT_NAME}', sans-serif;
             color: #333;
             backdrop-filter: blur(4px);
             -webkit-backdrop-filter: blur(4px);
@@ -896,12 +928,12 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('MDGmeek : 未应用主题');
     }
     
-    // 为 notranslate 类添加 MDUI Roboto 字体和高斯模糊
+    // 为 notranslate 类添加自定义字体和高斯模糊
     const notranslateStyle = document.createElement("style");
     notranslateStyle.innerHTML = `
-        /* 为所有 notranslate 类应用 MDUI Roboto 字体和高斯模糊 */
+        /* 为所有 notranslate 类应用自定义字体和高斯模糊 */
         .notranslate {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+            font-family: '${CUSTOM_FONT_NAME}', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
             font-weight: 400;
             line-height: 1.5;
             letter-spacing: 0.00938em;
@@ -920,7 +952,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .notranslate h4,
         .notranslate h5,
         .notranslate h6 {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+            font-family: '${CUSTOM_FONT_NAME}', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
             font-weight: 500;
             backdrop-filter: blur(${BLUR_INTENSITY}) !important;
             -webkit-backdrop-filter: blur(${BLUR_INTENSITY}) !important;
@@ -928,14 +960,14 @@ document.addEventListener('DOMContentLoaded', function() {
         
         .notranslate code,
         .notranslate pre {
-            font-family: 'Roboto Mono', 'Consolas', 'Monaco', 'Courier New', monospace !important;
+            font-family: '${CUSTOM_FONT_NAME} Mono', 'Consolas', 'Monaco', 'Courier New', monospace !important;
             backdrop-filter: blur(4px) !important;
             -webkit-backdrop-filter: blur(4px) !important;
             background: rgba(255, 255, 255, 0.2) !important;
         }
         
         .notranslate blockquote {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+            font-family: '${CUSTOM_FONT_NAME}', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
             font-style: italic;
             font-weight: 300;
             backdrop-filter: blur(6px) !important;
@@ -946,40 +978,40 @@ document.addEventListener('DOMContentLoaded', function() {
             margin-left: 0;
         }
         
-        /* 确保按钮也使用 Roboto 字体和模糊效果 */
+        /* 确保按钮也使用自定义字体和模糊效果 */
         .notranslate button,
         .notranslate input,
         .notranslate select,
         .notranslate textarea {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+            font-family: '${CUSTOM_FONT_NAME}', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
             backdrop-filter: blur(4px) !important;
             -webkit-backdrop-filter: blur(4px) !important;
             background: rgba(255, 255, 255, 0.2) !important;
             border: 1px solid rgba(255, 255, 255, 0.3) !important;
         }
         
-        /* 表格中的文字也应用 Roboto 字体和模糊效果 */
+        /* 表格中的文字也应使用自定义字体和模糊效果 */
         .notranslate table,
         .notranslate th,
         .notranslate td {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+            font-family: '${CUSTOM_FONT_NAME}', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
             backdrop-filter: blur(4px) !important;
             -webkit-backdrop-filter: blur(4px) !important;
             background: rgba(255, 255, 255, 0.15) !important;
         }
         
-        /* 列表项也应用 Roboto 字体和模糊效果 */
+        /* 列表项也应用自定义字体和模糊效果 */
         .notranslate ul,
         .notranslate ol,
         .notranslate li {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+            font-family: '${CUSTOM_FONT_NAME}', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
             backdrop-filter: blur(4px) !important;
             -webkit-backdrop-filter: blur(4px) !important;
         }
         
-        /* 链接也应用 Roboto 字体 */
+        /* 链接也应使用自定义字体 */
         .notranslate a {
-            font-family: 'Roboto', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
+            font-family: '${CUSTOM_FONT_NAME}', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif !important;
             backdrop-filter: blur(2px) !important;
             -webkit-backdrop-filter: blur(2px) !important;
         }
@@ -992,6 +1024,7 @@ document.addEventListener('DOMContentLoaded', function() {
         .mdui-card {
             transition: all 0.3s ease;
             min-height: 200px;
+            font-family: '${CUSTOM_FONT_NAME}', sans-serif !important;
         }
         
         .mdui-card:hover {
@@ -1005,21 +1038,22 @@ document.addEventListener('DOMContentLoaded', function() {
     `;
     document.head.appendChild(defaultCardStyle);
     
-    // 导入 Roboto 字体（如果尚未导入）
-    const loadRobotoFont = () => {
-        const fontLink = document.createElement('link');
-        fontLink.href = 'https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Roboto+Mono&display=swap';
-        fontLink.rel = 'stylesheet';
-        fontLink.type = 'text/css';
-        
-        // 检查是否已加载 Roboto 字体
-        const existingFonts = document.querySelectorAll('link[href*="fonts.googleapis.com/css2?family=Roboto"]');
-        if (existingFonts.length === 0) {
-            document.head.appendChild(fontLink);
-            console.log('MDGmeek: Roboto 字体已加载');
+    // 将自定义字体应用到更多元素
+    const additionalFontStyle = document.createElement("style");
+    additionalFontStyle.innerHTML = `
+        /* 应用自定义字体到更多元素 */
+        h1, h2, h3, h4, h5, h6,
+        p, span, div, a,
+        button, input, textarea, select,
+        table, th, td,
+        ul, ol, li {
+            font-family: '${CUSTOM_FONT_NAME}', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif !important;
         }
-    };
-    
-    // 延迟加载字体，避免阻塞页面渲染
-    setTimeout(loadRobotoFont, 500);
+        
+        /* 代码和等宽文本使用自定义等宽字体 */
+        code, pre, kbd, samp, var {
+            font-family: '${CUSTOM_FONT_NAME} Mono', 'Courier New', monospace !important;
+        }
+    `;
+    document.head.appendChild(additionalFontStyle);
 });
