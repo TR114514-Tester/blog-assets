@@ -336,7 +336,7 @@ document.addEventListener('DOMContentLoaded', function() {
         }
         var runday = document.getElementById('runday');
         if (runday) {
-            runday.insertAdjacentHTML('afterend', '<span id="busuanzi_container_site_pv" style="display:none">👁️ 总浏览量 👁️<span id="busuanzi_value_site_pv"></span>次 ｜ </span>');
+            runday.insertAdjacentHTML('afterend', '<span id="busuanzi_container_site_pv" style="display:none">👁️ 总浏览量 👁️<span id="busuanzi_value_site_pv"></span>次</span>');
         }
     }
     
