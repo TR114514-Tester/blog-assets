@@ -6,13 +6,13 @@ const AD_CONFIG = {
     title: "欢迎访问我的博客", 
     
     // 广告描述文字
-    description: "这里记录技术与生活，点击查看更多精彩内容！", 
+    description: "欢迎来到我的博客，希望你能在这里找到你需要的东西", 
     
-    // 点击跳转链接 (设为 '#' 则不可点击)
-    buttonLink: "https://github.com/Meekdai/Gmeek", 
+    // 点击跳转链接
+    buttonLink: "#", 
     
     // 显示位置: 'bottom-right' (右下), 'bottom-left' (左下), 'top-right' (右上), 'top-left' (左上)
-    position: "bottom-right",
+    position: "top-right",
 
     // 主题背景色 (支持 hex, rgb, rgba)
     backgroundColor: "rgba(50, 50, 50, 0.9)",
