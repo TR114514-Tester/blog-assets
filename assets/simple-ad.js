@@ -11,7 +11,7 @@ const AD_CONFIGS = [
         title: "花雨庭停服",
         description: "花会凋零，雨终会停，庭中之人去往了新的世界",
         buttonLink: "https://mc.163.com/news/20251210/29175_1275702.html",
-        position: "bottom-left",
+        position: "top-left",
         backgroundColor: "rgba(25, 100, 200, 0.9)",
         textColor: "#ffffff"
     },
