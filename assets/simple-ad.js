@@ -1,27 +1,29 @@
-// =================================================================
-// 🟢 广告配置区域 (请在这里修改)
-// =================================================================
-const AD_CONFIG = {
-    // 广告标题
-    title: "欢迎访问我的博客", 
-    
-    // 广告描述文字
-    description: "欢迎来到我的博客，希望你能在这里找到你需要的东西", 
-    
-    // 点击跳转链接
-    buttonLink: "#", 
-    
-    // 显示位置: 'bottom-right' (右下), 'bottom-left' (左下), 'top-right' (右上), 'top-left' (左上)
-    position: "top-right",
-
-    // 主题背景色 (支持 hex, rgb, rgba)
-    backgroundColor: "rgba(50, 50, 50, 0.9)",
-
-    // 文字颜色
-    textColor: "#ffffff"
-};
-// =================================================================
-
+const AD_CONFIGS = [
+    {
+        title: "欢迎访问我的博客",
+        description: "欢迎来到我的博客，希望你能在这里找到你需要的东西",
+        buttonLink: "#",
+        position: "top-right",
+        backgroundColor: "rgba(50, 50, 50, 0.9)",
+        textColor: "#ffffff"
+    },
+    {
+        title: "特别优惠",
+        description: "限时特价，快来查看我们的新产品",
+        buttonLink: "https://example.com",
+        position: "bottom-left",
+        backgroundColor: "rgba(25, 100, 200, 0.9)",
+        textColor: "#ffffff"
+    },
+    {
+        title: "订阅更新",
+        description: "订阅我们的新闻通讯，获取最新资讯",
+        buttonLink: "https://newsletter.com",
+        position: "top-left",
+        backgroundColor: "rgba(150, 50, 150, 0.9)",
+        textColor: "#ffffff"
+    }
+];
 
 class SimpleAd extends HTMLElement {
     constructor() {
@@ -30,25 +32,24 @@ class SimpleAd extends HTMLElement {
     }
   
     connectedCallback() {
+      const configIndex = this.getAttribute('data-config') || 0;
+      this.config = AD_CONFIGS[configIndex] || AD_CONFIGS[0];
       this.render();
       this.setupClickListener();
     }
   
     render() {
-      // 直接读取顶部的 AD_CONFIG 配置
-      const { title, description, position, backgroundColor, textColor } = AD_CONFIG;
+      const { title, description, position, backgroundColor, textColor } = this.config;
   
       this.shadowRoot.innerHTML = `
           <style>
             :host {
               display: block;
               position: fixed;
-              z-index: 9999; /* 确保层级足够高 */
+              z-index: 9999;
               cursor: pointer;
               transition: transform 0.3s ease, opacity 0.3s ease;
               font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
-              
-              /* 默认位置 */
               bottom: 20px;
               right: 20px;
             }
@@ -64,7 +65,7 @@ class SimpleAd extends HTMLElement {
               border-radius: 12px;
               box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
               max-width: 300px;
-              backdrop-filter: blur(5px); /* 毛玻璃效果 */
+              backdrop-filter: blur(5px);
               border: 1px solid rgba(255, 255, 255, 0.1);
             }
   
@@ -82,7 +83,6 @@ class SimpleAd extends HTMLElement {
               margin: 0;
             }
 
-            /* 关闭按钮样式 */
             .close-btn {
                 position: absolute;
                 top: 5px;
@@ -96,13 +96,11 @@ class SimpleAd extends HTMLElement {
                 opacity: 1;
             }
   
-            /* 位置样式逻辑 */
             :host(.top-left) { top: 20px; left: 20px; bottom: auto; right: auto; }
             :host(.top-right) { top: 20px; right: 20px; bottom: auto; left: auto; }
             :host(.bottom-left) { bottom: 20px; left: 20px; top: auto; right: auto; }
             :host(.bottom-right) { bottom: 20px; right: 20px; top: auto; left: auto; }
             
-            /* 移动端适配：屏幕小于600px时，居中显示在底部 */
             @media (max-width: 600px) {
                 :host, :host(.top-left), :host(.top-right), :host(.bottom-left), :host(.bottom-right) {
                     left: 50%;
@@ -126,25 +124,22 @@ class SimpleAd extends HTMLElement {
           </div>
         `;
         
-        // 根据配置添加位置 class
         this.classList.add(position);
     }
   
     setupClickListener() {
-      const { buttonLink } = AD_CONFIG;
+      const { buttonLink } = this.config;
       const container = this.shadowRoot.querySelector('.ad-container');
       const closeBtn = this.shadowRoot.querySelector('.close-btn');
 
-      // 关闭按钮逻辑（点击关闭移除元素，阻止冒泡）
       closeBtn.addEventListener('click', (e) => {
-          e.stopPropagation(); // 防止触发跳转
-          this.style.opacity = '0'; // 淡出动画
+          e.stopPropagation();
+          this.style.opacity = '0';
           setTimeout(() => {
-              this.remove(); // 从 DOM 中移除
+              this.remove();
           }, 300);
       });
 
-      // 跳转逻辑
       if (buttonLink && buttonLink !== '#') {
           container.addEventListener('click', () => {
             window.open(buttonLink, '_blank');
@@ -155,17 +150,14 @@ class SimpleAd extends HTMLElement {
     }
 }
   
-// 注册组件
 if (!customElements.get('simple-ad')) {
     customElements.define('simple-ad', SimpleAd);
 }
 
-// 🚀 自动执行：等待页面加载完成后，自动插入广告
 document.addEventListener('DOMContentLoaded', () => {
-    // 防止重复添加
-    if (!document.querySelector('simple-ad')) {
+    AD_CONFIGS.forEach((config, index) => {
         const adElement = document.createElement('simple-ad');
+        adElement.setAttribute('data-config', index);
         document.body.appendChild(adElement);
-        console.log('SimpleAd: 广告组件已自动加载');
-    }
+    });
 });
