@@ -8,21 +8,13 @@ const AD_CONFIGS = [
         textColor: "#ffffff"
     },
     {
-        title: "特别优惠",
-        description: "限时特价，快来查看我们的新产品",
-        buttonLink: "https://example.com",
+        title: "花雨庭停服",
+        description: "花会凋零，雨终会停，庭中之人去往了新的世界",
+        buttonLink: "https://mc.163.com/news/20251210/29175_1275702.html",
         position: "bottom-left",
         backgroundColor: "rgba(25, 100, 200, 0.9)",
         textColor: "#ffffff"
     },
-    {
-        title: "订阅更新",
-        description: "订阅我们的新闻通讯，获取最新资讯",
-        buttonLink: "https://newsletter.com",
-        position: "top-left",
-        backgroundColor: "rgba(150, 50, 150, 0.9)",
-        textColor: "#ffffff"
-    }
 ];
 
 class SimpleAd extends HTMLElement {
