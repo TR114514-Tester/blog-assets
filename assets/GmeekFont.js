@@ -1,4 +1,3 @@
-
 // 定义TTF字体文件地址（请修改为您需要的地址）
 const FONT_URL = 'https://blog-assets.traveler.dpdns.org/assets/font/font.ttf';
 const FONT_FAMILY = 'Font';
