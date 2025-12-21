@@ -1,12 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     
     const ORIGINAL_TITLE = document.title;
-    const HIDDEN_TITLES = "等你回来哦~，等你回来,别走呀~,快回来看看！";
+    const HIDDEN_TITLES = "等你回来哦~,再见，等你回来,别走呀~,快回来看看！";
+    const RETURN_TITLE = "欢迎回来！"; // 回来时显示的文字
+    const RETURN_DELAY = 1500; // 回来后延迟多少毫秒恢复原始标题（单位：毫秒）
     
     const titleArray = HIDDEN_TITLES.split(',').map(title => title.trim());
     
     let isPageVisible = true;
     let isWindowFocused = true;
+    let returnTimer = null;
     
     let hidden, visibilityChange;
     
@@ -28,8 +31,28 @@ document.addEventListener('DOMContentLoaded', function() {
     
     function updateTitle(isVisible) {
         if (isVisible) {
-            document.title = ORIGINAL_TITLE;
+            // 清除之前的定时器
+            if (returnTimer) {
+                clearTimeout(returnTimer);
+                returnTimer = null;
+            }
+            
+            // 先显示返回标题
+            document.title = RETURN_TITLE;
+            
+            // 设置定时器，延迟后恢复原始标题
+            returnTimer = setTimeout(() => {
+                document.title = ORIGINAL_TITLE;
+                returnTimer = null;
+            }, RETURN_DELAY);
+            
         } else {
+            // 如果用户离开时，清除返回标题的定时器
+            if (returnTimer) {
+                clearTimeout(returnTimer);
+                returnTimer = null;
+            }
+            
             const randomTitle = getRandomTitle();
             document.title = randomTitle;
         }
@@ -68,46 +91,6 @@ document.addEventListener('DOMContentLoaded', function() {
             isWindowFocused = false;
             updateTitle(false);
         });
-    }
-    
-    let titleAnimationEnabled = true;
-    
-    if (titleAnimationEnabled) {
-        
-        document.addEventListener('visibilitychange', function() {
-            if (!document.hidden) {
-                animateTitle();
-            }
-        });
-        
-        window.addEventListener('focus', function() {
-            setTimeout(() => {
-                animateTitle();
-            }, 100);
-        });
-        
-        function animateTitle() {
-            const originalTitle = document.title;
-            
-            let flashCount = 0;
-            const maxFlashes = 3;
-            const flashInterval = 400;
-            
-            const flashIntervalId = setInterval(() => {
-                if (flashCount % 2 === 0) {
-                    document.title = originalTitle;
-                } else {
-                    document.title = originalTitle;
-                }
-                
-                flashCount++;
-                
-                if (flashCount >= maxFlashes * 2) {
-                    clearInterval(flashIntervalId);
-                    document.title = originalTitle;
-                }
-            }, flashInterval);
-        }
     }
     
 });
