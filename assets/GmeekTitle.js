@@ -95,7 +95,7 @@ document.addEventListener('DOMContentLoaded', function() {
             
             const flashIntervalId = setInterval(() => {
                 if (flashCount % 2 === 0) {
-                    document.title = "✨ " + originalTitle + " ✨";
+                    document.title = originalTitle;
                 } else {
                     document.title = originalTitle;
                 }
