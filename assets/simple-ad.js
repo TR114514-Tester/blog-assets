@@ -9,7 +9,7 @@ const AD_CONFIGS = [
     },
     {
         title: "花雨庭停服",
-        description: "花会凋零，雨终会停，庭中之人去往了新的世界<br>亲爱的冒险家：<br><br><br>由于网络游戏服务器《花雨庭端游Java版》《花雨庭基岩版》游戏缺乏后期维护和更新，无法达到网络游戏服务器品质要求，《花雨庭端游Java版》《花雨庭基岩版》网络游戏服务器将于2025年12月29日停止运营，对服务器进行下架。",
+        description: "花会凋零，雨终会停，庭中之人去往了新的世界",
         buttonLink: "https://mc.163.com/news/20251210/29175_1275702.html",
         position: "top-left",
         backgroundColor: "rgba(25, 100, 200, 0.9)",
